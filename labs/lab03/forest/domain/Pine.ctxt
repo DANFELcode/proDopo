@@ -1,0 +1,9 @@
+#BlueJ class context
+comment0.target=Pine
+comment0.text=\n\ Pine\n\ Representa\ un\ pino\ en\ el\ bosque,\ un\ tipo\ de\ \u00E1rbol\ que\ mantiene\n\ su\ color\ verde\ oscuro\ constante\ sin\ importar\ el\ paso\ del\ tiempo.\n\n\ @author\ Daniel\ Felipe\ Sua\ y\ Juan\ David\ Munar\n
+comment1.params=forest\ row\ column
+comment1.target=Pine(Forest,\ int,\ int)
+comment1.text=\n\ Crea\ un\ nuevo\ pino\ en\ una\ posici\u00F3n\ espec\u00EDfica\ del\ bosque.\n\ *\ @param\ forest\ el\ bosque\ donde\ habitar\u00E1\ el\ pino\n\ @param\ row\ la\ fila\ inicial\n\ @param\ column\ la\ columna\ inicial\n
+comment2.params=
+comment2.target=void\ ticTac()
+numComments=3

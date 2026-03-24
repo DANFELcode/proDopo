@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=PineTest
+comment0.text=\r\n\ PineTest\r\n\ Proporciona\ las\ pruebas\ unitarias\ para\ asegurar\ el\ correcto\ comportamiento\r\n\ visual\ y\ de\ envejecimiento\ del\ pino.\r\n\r\n\ @author\ Daniel\ Felipe\ Sua\ y\ Juan\ David\ Munar\r\n
+comment1.params=
+comment1.target=void\ shouldBeDarkGreenInitially()
+comment1.text=\r\n\ Deberia\:\ verificar\ que\ el\ pino\ nazca\ con\ el\ color\ verde\ oscuro.\r\n
+comment2.params=
+comment2.target=void\ shouldNotChangeColorAfterTicTacs()
+comment2.text=\r\n\ Deberia\:\ verificar\ que\ el\ pino\ no\ cambie\ de\ color\ con\ el\ paso\ de\ los\ tictacs.\r\n
+comment3.params=
+comment3.target=void\ shouldAgeAndConsumeEnergyLikeNormalTree()
+comment3.text=\r\n\ Deberia\:\ verificar\ que\ el\ pino\ envejezca\ y\ consuma\ energ\u00EDa\ como\ un\ \u00E1rbol\ normal.\r\n
+comment4.params=
+comment4.target=void\ shouldDieWhenEnergyDepletes()
+comment4.text=\r\n\ Deberia\:\ verificar\ que\ el\ pino\ muera\ y\ sea\ removido\ del\ bosque\ cuando\ su\ energia\ se\ \r\n\ agota\ por\ completo.\r\n
+numComments=5

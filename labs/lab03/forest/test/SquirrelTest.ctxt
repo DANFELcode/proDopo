@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=SquirrelTest
+comment0.text=\r\n\ SquirrelTest\ -\ Pruebas\ de\ unidad\ para\ Squirrel.\r\n\ Todas\ las\ pruebas\ se\ ejecutan\ en\ modo\ invisible.\r\n\ @author\ Daniel\ Felipe\ Sua\ y\ Juan\ David\ Munar\r\n
+comment1.params=
+comment1.target=void\ shouldBeBrownInitially()
+comment1.text=\r\n\ Deberia\:\ verificar\ que\ la\ ardilla\ nazca\ con\ el\ color\ caf\u00E9\ inicial\ correcto.\r\n
+comment2.params=
+comment2.target=void\ shouldDieAfter10Years()
+comment2.text=\r\n\ Deberia\:\ verificar\ que\ la\ ardilla\ muera\ y\ desaparezca\ del\ bosque\ al\ cumplir\ 10\ a\u00F1os\ (40\ tic-tacs).\r\n
+numComments=3

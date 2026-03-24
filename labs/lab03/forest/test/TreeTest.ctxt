@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=TreeTest
+comment1.params=
+comment1.target=void\ setUp()
+comment2.params=
+comment2.target=void\ tearDown()
+comment3.params=
+comment3.target=void\ shouldBePinkInitially()
+comment3.text=\r\n\ Deberia\:\ verificar\ que\ el\ \u00E1rbol\ nazca\ con\ el\ color\ rosado\ inicial.\r\n
+comment4.params=
+comment4.target=void\ shouldChangeColorAfterTicTac()
+comment4.text=\r\n\ Deberia\:\ verificar\ que\ el\ \u00E1rbol\ cambie\ de\ color\ despu\u00E9s\ de\ un\ tic-tac.\r\n
+comment5.params=
+comment5.target=void\ shouldDieWhenEnergyDepletes()
+comment5.text=\r\n\ Deberia\:\ verificar\ que\ el\ \u00E1rbol\ muera\ cuando\ se\ agota\ su\ energ\u00EDa.\r\n
+numComments=6

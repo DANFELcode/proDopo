@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=Thing
+comment0.text=\n\ Thing\n\ Representa\ la\ interfaz\ base\ para\ todos\ los\ elementos\ que\ pueden\ existir\ \n\ dentro\ de\ la\ cuadr\u00EDcula\ del\ bosque.\n
+comment1.params=
+comment1.target=void\ ticTac()
+comment1.text=\n\ Define\ la\ acci\u00F3n\ o\ comportamiento\ que\ el\ objeto\ ejecutar\u00E1\ en\ cada\ \n\ ciclo\ de\ tiempo\ (pulso)\ de\ la\ simulaci\u00F3n.\n
+comment2.params=
+comment2.target=int\ shape()
+comment2.text=\n\ Obtiene\ la\ forma\ geom\u00E9trica\ del\ objeto\ para\ su\ representaci\u00F3n\ visual.\n\ *\ @return\ un\ entero\ que\ representa\ la\ forma\ (por\ defecto\ SQUARE)\n
+comment3.params=
+comment3.target=java.awt.Color\ getColor()
+comment3.text=\n\ Obtiene\ el\ color\ del\ objeto\ para\ su\ representaci\u00F3n\ visual.\n\ *\ @return\ el\ objeto\ Color\ correspondiente\ (por\ defecto\ Color.black)\n
+comment4.params=
+comment4.target=boolean\ isOnlyThing()
+comment4.text=\n\ Indica\ si\ el\ objeto\ es\ exclusivamente\ una\ cosa\ inanimada\ (no\ viva).\n\ *\ @return\ true\ por\ defecto,\ indicando\ que\ es\ un\ objeto\ inanimado\n
+comment5.params=
+comment5.target=boolean\ isLivingThing()
+comment5.text=\n\ Indica\ si\ el\ objeto\ es\ una\ entidad\ viva\ (LivingThing).\n\ *\ @return\ false\ por\ defecto,\ asumiendo\ que\ las\ cosas\ b\u00E1sicas\ no\ est\u00E1n\ vivas\n
+numComments=6

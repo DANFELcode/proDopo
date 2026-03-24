@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=ShadowTest
+comment0.text=\r\n\ ShadowTest\r\n\ Proporciona\ las\ pruebas\ unitarias\ para\ asegurar\ el\ correcto\ comportamiento\ visual,\r\n\ la\ propagacion\ en\ la\ fila\ y\ el\ movimiento\ circular\ de\ la\ clase\ Shadow.\r\n\r\n\ @author\ Daniel\ Felipe\ Sua\ y\ Juan\ David\ Munar\r\n
+comment1.params=
+comment1.target=void\ shouldBeBlackAndRound()
+comment1.text=\r\n\ Deberia\:\ verificar\ que\ la\ sombra\ nazca\ con\ el\ color\ negro\ y\ forma\ redonda.\r\n
+comment2.params=
+comment2.target=void\ shouldSpreadAcrossTheEntireRow()
+comment2.text=\r\n\ Deberia\:\ verificar\ que\ la\ sombra\ se\ esparza\ por\ toda\ la\ fila\ inicial\ al\ ser\ creada.\r\n
+comment3.params=
+comment3.target=void\ shouldMoveSouthToNorthCircularly()
+comment3.text=\r\n\ Deberia\:\ verificar\ que\ la\ sombra\ se\ mueva\ de\ sur\ a\ norte\ y\ reaparezca\ al\ sur.\r\n
+numComments=4

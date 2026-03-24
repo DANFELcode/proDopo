@@ -1,0 +1,25 @@
+#BlueJ class context
+comment0.target=Squirrel
+comment0.text=\n\ Squirrel\n\ Representa\ una\ ardilla\ en\ el\ bosque\ que\ envejece,\ cambia\ de\ color,\ se\ mueve\n\ aleatoriamente,\ se\ reproduce\ \u00FAnicamente\ si\ hay\ exactamente\ una\ celda\ vac\u00EDa\ \n\ en\ medio\ de\ ella\ y\ otra\ ardilla\ (en\ l\u00EDnea\ recta\ o\ diagonal),\ y\ muere\ tras\ \n\ 10\ a\u00F1os\ o\ al\ quedarse\ sin\ energ\u00EDa.\n\n\ @author\ Daniel\ Felipe\ Sua\ y\ Juan\ David\ Munar\n
+comment1.params=forest\ row\ column
+comment1.target=Squirrel(Forest,\ int,\ int)
+comment1.text=\n\ Crea\ una\ nueva\ ardilla\ en\ una\ posici\u00F3n\ espec\u00EDfica\ del\ bosque.\n\n\ @param\ forest\ el\ bosque\ donde\ habitar\u00E1\ la\ ardilla\n\ @param\ row\ la\ fila\ inicial\n\ @param\ column\ la\ columna\ inicial\n
+comment2.params=
+comment2.target=int\ shape()
+comment2.text=\n\ Define\ la\ forma\ visual\ de\ la\ ardilla\ en\ la\ interfaz\ gr\u00E1fica.\n\ *\ @return\ una\ constante\ entera\ que\ representa\ la\ forma\ redonda\ (Thing.ROUND)\n
+comment3.params=
+comment3.target=java.awt.Color\ getColor()
+comment3.text=\n\ Obtiene\ el\ color\ actual\ de\ la\ ardilla.\n\ *\ @return\ un\ objeto\ Color\ que\ representa\ el\ tono\ de\ la\ ardilla\n
+comment4.params=
+comment4.target=void\ ticTac()
+comment4.text=\n\ Ejecuta\ las\ acciones\ de\ la\ ardilla\ en\ un\ ciclo\ de\ tiempo\:\ \n\ envejece,\ cambia\ de\ color,\ consume\ energ\u00EDa,\ se\ mueve,\ se\ reproduce\ o\ muere.\n
+comment5.params=
+comment5.target=void\ moveRandomly()
+comment5.text=\n\ Mueve\ la\ ardilla\ aleatoriamente\ a\ una\ de\ las\ celdas\ adyacentes\ vac\u00EDas\n\ disponibles\ en\ el\ bosque.\n
+comment6.params=
+comment6.target=void\ reproduce()
+comment6.text=\n\ Gestiona\ la\ reproducci\u00F3n\ de\ la\ ardilla.\ Si\ encuentra\ otra\ ardilla\ a\ una\ \n\ distancia\ de\ dos\ celdas\ y\ la\ celda\ intermedia\ est\u00E1\ vac\u00EDa,\ genera\ una\ nueva\ cr\u00EDa.\n
+comment7.params=
+comment7.target=void\ die()
+comment7.text=\n\ Elimina\ a\ la\ ardilla\ del\ bosque,\ liberando\ su\ celda\ en\ la\ matriz\ para\ que\ \n\ otros\ objetos\ puedan\ ocuparla.\n
+numComments=8

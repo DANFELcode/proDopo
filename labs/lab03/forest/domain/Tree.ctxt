@@ -1,0 +1,25 @@
+#BlueJ class context
+comment0.target=Tree
+comment0.text=Information\ about\ a\ Tree<br>\n<b>(forest,row,column,color)</b><br>\n<br>\n
+comment1.params=forest\ row\ column
+comment1.target=Tree(Forest,\ int,\ int)
+comment1.text=Create\ a\ new\ Tree(<b>row,column</b>)\ in\ the\ forest\ <b>forest</b>..\n\ @param\ forest\ \n\ @param\ row\ \n\ @param\ column\ \n
+comment2.params=
+comment2.target=int\ getRow()
+comment2.text=Returns\ the\ row\n\ \ \ \ @return\ \n
+comment3.params=
+comment3.target=int\ getColumn()
+comment3.text=Returns\ the\ column\n\ \ \ \ @return\ \n
+comment4.params=
+comment4.target=java.awt.Color\ getColor()
+comment4.text=Returns\ the\ color\n\ \ \ \ @return\ \n
+comment5.params=
+comment5.target=int\ shape()
+comment5.text=Returns\ the\ shape\n\ \ \ \ @return\ \n
+comment6.params=
+comment6.target=void\ ticTac()
+comment6.text=ticTac\n
+comment7.params=
+comment7.target=void\ die()
+comment7.text=Die\n
+numComments=8

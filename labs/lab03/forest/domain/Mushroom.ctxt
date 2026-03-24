@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=Mushroom
+comment0.text=\n\ Mushroom\n\ Representa\ un\ hongo\ en\ el\ bosque\ que\ es\ de\ color\ morado,\ tiene\ forma\ redonda\n\ y\ se\ propaga\ lentamente\ creando\ clones\ en\ celdas\ adyacentes\ vac\u00EDas.\n\n\ @author\ Daniel\ Felipe\ Sua\ y\ Juan\ David\ Munar\n
+comment1.params=forest\ row\ column
+comment1.target=Mushroom(Forest,\ int,\ int)
+comment1.text=\n\ Crea\ un\ nuevo\ hongo\ en\ una\ posici\u00F3n\ espec\u00EDfica\ del\ bosque.\n\ *\ @param\ forest\ el\ bosque\ donde\ habitar\u00E1\ el\ hongo\n\ @param\ row\ la\ fila\ inicial\n\ @param\ column\ la\ columna\ inicial\n
+comment2.params=
+comment2.target=int\ shape()
+comment2.text=\n\ Define\ la\ forma\ visual\ del\ hongo\ en\ la\ interfaz\ gr\u00E1fica.\n\ *\ @return\ una\ constante\ entera\ que\ representa\ la\ forma\ redonda\ (Thing.ROUND)\n
+comment3.params=
+comment3.target=java.awt.Color\ getColor()
+comment3.text=\n\ Obtiene\ el\ color\ del\ hongo.\n\ *\ @return\ un\ objeto\ Color\ que\ representa\ el\ tono\ morado\ caracter\u00EDstico\n
+comment4.params=
+comment4.target=void\ ticTac()
+comment4.text=\n\ Ejecuta\ las\ acciones\ del\ hongo\ en\ cada\ ciclo\ de\ tiempo.\n\ Incrementa\ su\ contador\ interno\ y,\ cada\ 8\ unidades\ de\ tiempo,\ intenta\ \n\ propagarse\ mediante\ la\ liberaci\u00F3n\ de\ esporas.\n
+comment5.params=
+comment5.target=void\ spread()
+comment5.text=\n\ Mec\u00E1nica\ de\ clonaci\u00F3n\ y\ expansi\u00F3n\ del\ hongo.\ Busca\ en\ sus\ celdas\ adyacentes\n\ (horizontales,\ verticales\ y\ diagonales)\ un\ espacio\ vac\u00EDo;\ si\ lo\ encuentra,\ \n\ genera\ un\ nuevo\ hongo\ en\ esa\ posici\u00F3n\ y\ termina\ el\ proceso.\n
+numComments=6

@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=MushroomTest
+comment0.text=\r\n\ MushroomTest\r\n\ Proporciona\ las\ pruebas\ unitarias\ para\ asegurar\ el\ correcto\ comportamiento\ visual\r\n\ y\ la\ mec\u00E1nica\ de\ propagaci\u00F3n\ del\ hongo.\r\n\r\n\ @author\ Daniel\ Felipe\ Sua\ y\ Juan\ David\ Munar\r\n
+comment1.params=
+comment1.target=void\ shouldBePurple()
+comment1.text=\r\n\ Deberia\:\ verificar\ que\ el\ hongo\ nazca\ con\ el\ color\ morado.\r\n
+comment2.params=
+comment2.target=void\ shouldBeRound()
+comment2.text=\r\n\ Deberia\:\ verificar\ que\ la\ forma\ del\ hongo\ sea\ redonda.\r\n
+comment3.params=
+comment3.target=void\ shouldSpreadAfter8TicTacs()
+comment3.text=\r\n\ Deberia\:\ verificar\ que\ el\ hongo\ se\ propague\ a\ una\ celda\ vecina\ despues\ de\ 8\ tictacs.\r\n
+comment4.params=
+comment4.target=void\ shouldNeverDie()
+comment4.text=\r\n\ Deberia\:\ verificar\ que\ el\ hongo\ es\ inmortal\ y\ permanece\ en\ su\ posicion\ inicial\r\n\ incluso\ despues\ de\ una\ cantidad\ masiva\ de\ tictacs,\ ya\ que\ no\ hereda\ de\ LivingThing.\r\n
+numComments=5

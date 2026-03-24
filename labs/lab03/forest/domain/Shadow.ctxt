@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=Shadow
+comment0.text=\n\ Shadow\n\ Representa\ una\ sombra\ en\ el\ bosque\ que\ se\ esparce\ por\ toda\ su\ fila\ inicial\n\ y\ se\ desplaza\ de\ sur\ a\ norte\ de\ forma\ circular.\n\n\ @author\ Daniel\ Felipe\ Sua\ y\ Juan\ David\ Munar\n
+comment1.params=forest\ row\ column
+comment1.target=Shadow(Forest,\ int,\ int)
+comment1.text=\n\ Crea\ una\ nueva\ sombra\ principal\ que\ se\ esparce\ por\ toda\ la\ fila.\n\ *\ @param\ forest\ el\ bosque\ donde\ se\ proyectar\u00E1\ la\ sombra\n\ @param\ row\ la\ fila\ inicial\n\ @param\ column\ la\ columna\ inicial\n
+comment2.params=forest\ row\ column\ isClone
+comment2.target=Shadow(Forest,\ int,\ int,\ boolean)
+comment2.text=\n\ Constructor\ privado\ para\ crear\ los\ fragmentos\ de\ sombra\ extendida\n\ sin\ causar\ un\ ciclo\ infinito\ de\ creacion.\n\ *\ @param\ forest\ el\ bosque\n\ @param\ row\ la\ fila\n\ @param\ column\ la\ columna\n\ @param\ isClone\ indicador\ de\ clon\n
+comment3.params=
+comment3.target=int\ shape()
+comment4.params=
+comment4.target=java.awt.Color\ getColor()
+comment5.params=
+comment5.target=void\ ticTac()
+numComments=6
