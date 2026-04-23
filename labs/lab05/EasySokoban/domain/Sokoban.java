@@ -46,9 +46,8 @@ public class Sokoban {
      * 1. El jugador debe poder alcanzar todas las posiciones necesarias para empujar las cajas y las cajas deben poder llegar
      * a los destinos
      * 2. No permitir deadlocks estructurales, es decir cajas en esquinas inicialmente o paredes sin salida lateral, en general
-     * en posiciones donde las cajas no se puedan mover
-     * 3. Las cajas no pueden estar en sus destinos al inicio     
-     * 4. Distancia minima entre el jugador y las cajas al inicio = 2(el jugador no aparezca pegado a una caja al inicio porque podría
+     * en posiciones donde las cajas no se puedan mover    
+     * 3. Distancia minima entre el jugador y las cajas al inicio = 2(el jugador no aparezca pegado a una caja al inicio porque podría
      * bloquearla sin querer contra una pared )
      */     
     public void generate(){
@@ -58,7 +57,7 @@ public class Sokoban {
                 board[row][col] = 'e';
             }
         }
-        
+
         for (int row = 0; row < height; row++) {
             board[row][0] = 'w';
             board[row][width-1] = 'w';
@@ -77,17 +76,22 @@ public class Sokoban {
                 do{
                     randomRow = rand.nextInt(board.length);
                     randomCol = rand.nextInt(board[0].length);
-                } while (board[randomRow][randomCol] != 'e');
+                } while ((board[randomRow][randomCol] != 'e')
+                    // regla 2
+                    || (e == 'b' && isStuck(randomRow, randomCol)) 
+                    || (e == 'b' && isBoxesInAdjacency(randomRow, randomCol)) 
+                );
                 board[randomRow][randomCol] = e;
             }               
-        }
+        }    
 
 
         int randomRow, randomCol;
         do{
             randomRow = rand.nextInt(board.length);
             randomCol = rand.nextInt(board[0].length);
-        } while (board[randomRow][randomCol] != 'e');
+        } while ((board[randomRow][randomCol] != 'e')
+            || areBoxNeighbors(randomRow, randomCol)); // regla 3
         board[randomRow][randomCol] = 'p';
 
     
@@ -96,13 +100,58 @@ public class Sokoban {
             generate();
         } else{
             System.out.println("Tablero conectado");
-        }
-
-        
+        }      
                    
     }
+
  
-    
+    private boolean isBoxesInAdjacency(int row, int col) {
+
+        boolean badAdjacency = false;
+
+        // arriba-izquierda
+        badAdjacency = badAdjacency || (
+            board[row-1][col] == 'b' &&
+            board[row][col-1] == 'b' &&
+            board[row-1][col-1] == 'b'
+        );
+
+        // arriba-derecha
+        badAdjacency = badAdjacency || (
+            board[row-1][col] == 'b' &&
+            board[row][col+1] == 'b' &&
+            board[row-1][col+1] == 'b'
+        );
+
+        // abajo-izquierda
+        badAdjacency = badAdjacency || (
+            board[row+1][col] == 'b' &&
+            board[row][col-1] == 'b' &&
+            board[row+1][col-1] == 'b'
+        );
+
+        // abajo-derecha
+        badAdjacency = badAdjacency || (
+            board[row+1][col] == 'b' &&
+            board[row][col+1] == 'b' &&
+            board[row+1][col+1] == 'b'
+        );
+
+        return badAdjacency;
+    }
+
+    private boolean areBoxNeighbors(int row, int col) {
+        boolean neighborVertical = board[row-1][col] == 'b' || board[row+1][col] == 'b';
+        boolean neighborHorizontal = board[row][col-1] == 'b' || board[row][col+1] == 'b';
+        return neighborVertical || neighborHorizontal;
+    }
+
+    private boolean isStuck(int row, int col) {
+        boolean blockedVertical = board[row-1][col] == 'w' || board[row+1][col] == 'w';
+        boolean blockedHorizontal = board[row][col-1] == 'w' || board[row][col+1] == 'w';
+        return blockedVertical && blockedHorizontal;
+    }
+
     private boolean isConnected() {
         int startRow = -1, startCol = -1;
         for (int row = 0; row < height; row++) {
