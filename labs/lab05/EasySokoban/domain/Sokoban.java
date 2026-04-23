@@ -70,6 +70,16 @@ public class Sokoban {
                 board[randomRow][randomCol] = e;
             }               
         }
+
+
+        int randomRow, randomCol;
+            do{
+                randomRow = rand.nextInt(board.length);
+                randomCol = rand.nextInt(board[0].length);
+            } while (board[randomRow][randomCol] != 'e');
+            board[randomRow][randomCol] = 'p';
+
+        
                    
     }
  
