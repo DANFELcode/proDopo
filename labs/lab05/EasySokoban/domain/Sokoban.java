@@ -104,7 +104,13 @@ public class Sokoban {
                    
     }
 
- 
+    /**
+     * Verifica si al colocar una caja en la posición dada se forma un bloque 2x2
+     * con otras tres cajas adyacentes.
+     * @param row Fila de la posicion a evaluar
+     * @param col Columna de la posicion a evaluar
+     * @return true si se forma un bloque 2x2 de cajas, false en caso contrario
+     */ 
     private boolean isBoxesInAdjacency(int row, int col) {
 
         boolean badAdjacency = false;
@@ -140,18 +146,38 @@ public class Sokoban {
         return badAdjacency;
     }
 
+    /**
+     * Verifica si existen cajas adyacentes a la posicion dada.
+     * @param row Fila de la posicion a evaluar
+     * @param col Columna de la posicion a evaluar
+     * @return true si hay al menos una caja vecina, false en caso contrario
+     */
+
     private boolean areBoxNeighbors(int row, int col) {
         boolean neighborVertical = board[row-1][col] == 'b' || board[row+1][col] == 'b';
         boolean neighborHorizontal = board[row][col-1] == 'b' || board[row][col+1] == 'b';
         return neighborVertical || neighborHorizontal;
     }
 
+
+    /**
+     * Determina si una posicion corresponde a un atascamiento de una caja con respecto 
+     * a las paredes, es decir posiciones donde las cajas no se peudan mover
+     * 
+     * @param row Fila de la posicion a evaluar
+     * @param col Columna de la posicion a evaluar
+     * @return true si la posicion esta bloqueada, false en caso contrario
+     */
     private boolean isStuck(int row, int col) {
         boolean blockedVertical = board[row-1][col] == 'w' || board[row+1][col] == 'w';
         boolean blockedHorizontal = board[row][col-1] == 'w' || board[row][col+1] == 'w';
         return blockedVertical && blockedHorizontal;
     }
 
+    /**
+     * Verifica que todas las cajas y destinos son alcanzables sin atravesar paredes.
+     * @return true si todas las cajas y destinos son alcanzables, false en caso contrario
+     */
     private boolean isConnected() {
         int startRow = -1, startCol = -1;
         for (int row = 0; row < height; row++) {
