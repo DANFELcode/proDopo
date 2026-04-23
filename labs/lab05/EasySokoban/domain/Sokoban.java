@@ -3,6 +3,8 @@ package domain;
 import java.io.IOException;
 import java.util.*;
 
+// Falta hacer que el jugador pueda alcanzar todas las posiciones de empuje
+
 
 /**
  * Representa al juego Sokoban <br>
@@ -175,6 +177,36 @@ public class Sokoban {
     }
 
     /**
+     * Verifica que todas las cajas tienen al menos una posicion desde la que el jugador
+     * puede empujarlas a una celda no bloqueada.
+     * @param visited Celdas alcanzables por el jugador
+     * @return true si todas las cajas pueden ser empujadas, false en caso contrario
+     */
+    private boolean allBoxesCanBePushed(boolean[][] visited) {
+        int[][] directions = {{-1,0},{1,0},{0,-1},{0,1}};
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                if (board[row][col] == 'b') {
+                    boolean canPush = false;
+                    for (int[] dir : directions) {
+                        int pushRow = row - dir[0];
+                        int pushCol = col - dir[1];
+                        int destRow = row + dir[0];
+                        int destCol = col + dir[1];
+                        if (visited[pushRow][pushCol] && board[destRow][destCol] != 'w') {
+                            canPush = true;
+                        }
+                    }
+                    if (!canPush) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
      * Verifica que todas las cajas y destinos son alcanzables sin atravesar paredes.
      * @return true si todas las cajas y destinos son alcanzables, false en caso contrario
      */
@@ -201,7 +233,8 @@ public class Sokoban {
                 int newRow = current[0] + dir[0];
                 int newCol = current[1] + dir[1];
                 if (newRow >= 0 && newRow < height && newCol >= 0 && newCol < width
-                    && !visited[newRow][newCol] && board[newRow][newCol] != 'w') {
+                    && !visited[newRow][newCol] && board[newRow][newCol] != 'w'
+                    && board[newRow][newCol] != 'b') {
                     visited[newRow][newCol] = true;
                     queue.add(new int[]{newRow, newCol});
                 }
@@ -210,12 +243,13 @@ public class Sokoban {
 
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
-                if ((board[row][col] == 'b' || board[row][col] == 'd') && !visited[row][col]) {
+                if (board[row][col] == 'd' && !visited[row][col]) {
                     return false;
                 }
             }
         }
-        return true;
+
+        return allBoxesCanBePushed(visited);
         
     }
 
