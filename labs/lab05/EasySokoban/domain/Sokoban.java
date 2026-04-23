@@ -3,8 +3,6 @@ package domain;
 import java.io.IOException;
 import java.util.*;
 
-// Falta hacer que el jugador pueda alcanzar todas las posiciones de empuje
-
 
 /**
  * Representa al juego Sokoban <br>
