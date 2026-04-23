@@ -43,11 +43,13 @@ public class Sokoban {
      * Genera las paredes internas, destinos y cajas de manera aleatoria, donde
      * el numero de cada una equivale al 10% del area del tablero.
      * Reglas de generacion:
-     * 1. Conectividad: jugador, cajas y destinos deben estar todos en zonas accesibles entre si
-     * 2. Movilidad de cajas: ninguna caja puede estar en una posicion donde no se pueda mover
-     * 3. Las cajas no pueden estar en sus destinos al inicio
-     * 4. Las paredes internas no pueden formar hileras
-     * 5. Distancia minima entre el jugador y las cajas al inicio
+     * 1. El jugador debe poder alcanzar todas las posiciones necesarias para empujar las cajas y las cajas deben poder llegar
+     * a los destinos
+     * 2. No permitir deadlocks estructurales, es decir cajas en esquinas inicialmente o paredes sin salida lateral, en general
+     * en posiciones donde las cajas no se puedan mover
+     * 3. Las cajas no pueden estar en sus destinos al inicio     
+     * 4. Distancia minima entre el jugador y las cajas al inicio = 2(el jugador no aparezca pegado a una caja al inicio porque podría
+     * bloquearla sin querer contra una pared )
      */     
     public void generate(){
         
@@ -55,6 +57,15 @@ public class Sokoban {
             for (int col = 0; col < width; col++) {
                 board[row][col] = 'e';
             }
+        }
+        
+        for (int row = 0; row < height; row++) {
+            board[row][0] = 'w';
+            board[row][width-1] = 'w';
+        }
+        for (int col = 0; col < width; col++) {
+            board[0][col] = 'w';
+            board[height-1][col] = 'w';
         }
 
         Random rand = new Random();
@@ -73,17 +84,66 @@ public class Sokoban {
 
 
         int randomRow, randomCol;
-            do{
-                randomRow = rand.nextInt(board.length);
-                randomCol = rand.nextInt(board[0].length);
-            } while (board[randomRow][randomCol] != 'e');
-            board[randomRow][randomCol] = 'p';
+        do{
+            randomRow = rand.nextInt(board.length);
+            randomCol = rand.nextInt(board[0].length);
+        } while (board[randomRow][randomCol] != 'e');
+        board[randomRow][randomCol] = 'p';
+
+    
+        // Regla 1
+        if (!isConnected()){
+            generate();
+        } else{
+            System.out.println("Tablero conectado");
+        }
 
         
                    
     }
  
     
+    private boolean isConnected() {
+        int startRow = -1, startCol = -1;
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                if (board[row][col] == 'p') {
+                    startRow = row;
+                    startCol = col;
+                }
+            }
+        }
+
+        boolean[][] visited = new boolean[height][width];
+        Queue<int[]> queue = new LinkedList<>();
+        queue.add(new int[]{startRow, startCol});
+        visited[startRow][startCol] = true;
+
+        int[][] directions = {{-1,0},{1,0},{0,-1},{0,1}};
+        while (!queue.isEmpty()) {
+            int[] current = queue.poll();
+            for (int[] dir : directions) {
+                int newRow = current[0] + dir[0];
+                int newCol = current[1] + dir[1];
+                if (newRow >= 0 && newRow < height && newCol >= 0 && newCol < width
+                    && !visited[newRow][newCol] && board[newRow][newCol] != 'w') {
+                    visited[newRow][newCol] = true;
+                    queue.add(new int[]{newRow, newCol});
+                }
+            }
+        }
+
+        for (int row = 0; row < height; row++) {
+            for (int col = 0; col < width; col++) {
+                if ((board[row][col] == 'b' || board[row][col] == 'd') && !visited[row][col]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+        
+    }
+
     /**
      * Mueve el jugador en una dirección posible
      * Si hay una caja en el camino la empuja a la siguiente celda vacia, si hay una pared
@@ -150,7 +210,12 @@ public class Sokoban {
     public static void main(String[] args) {
         Sokoban s = new Sokoban(9, 7);
         s.generate();
-        System.out.println(Arrays.deepToString(s.board()));
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 7; col++) {
+                System.out.print(s.board()[row][col] + " ");
+            }
+            System.out.println();
+        }
     }
 
 }
