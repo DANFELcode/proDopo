@@ -8,7 +8,7 @@ import java.io.File;
 
 /**
  * SokobanGUI - Interfaz gráfica para el juego Sokoban
- * * @author Daniel Felipe Sua y Juan David Munar
+ * @author Daniel Felipe Sua y Juan David Munar
  */
 public class SokobanGUI extends JFrame {
 
@@ -16,7 +16,7 @@ public class SokobanGUI extends JFrame {
 
     private JMenuBar menuBar;
     private JMenu opciones, configuración;
-    private JMenuItem nuevo, abrir, salvar, salir, reiniciar;
+    private JMenuItem nuevo, abrir, salvar, salir, reiniciar, cambiarTamaño; // ciclo 8
     private JMenuItem colorMuros, colorSuelo, colorJugador, colorCaja;
 
     private JPanel panelTablero;
@@ -153,6 +153,7 @@ public class SokobanGUI extends JFrame {
         salvar = new JMenuItem("Salvar");
         salir = new JMenuItem("Salir");
         reiniciar = new JMenuItem("Reiniciar");
+        cambiarTamaño = new JMenuItem("Cambiar tamaño"); // ciclo 8        
         
         colorMuros = new JMenuItem("Color de muros");
         colorSuelo = new JMenuItem("Color de suelo");
@@ -173,6 +174,7 @@ public class SokobanGUI extends JFrame {
         configuración.add(colorSuelo);
         configuración.add(colorJugador);
         configuración.add(colorCaja);
+        configuración.add(cambiarTamaño); //ciclo 8
 
         menuBar.add(opciones);
         menuBar.add(configuración);
@@ -211,6 +213,19 @@ public class SokobanGUI extends JFrame {
             juego.restart();           
             movimientosContador = 0;   
             refresh();                 
+        });
+
+        // ciclo 8 - CORREGIDO
+        cambiarTamaño.addActionListener(e -> {
+            String inputHeight = JOptionPane.showInputDialog(this, "Numero de filas?: ", "cambiar tamaño", JOptionPane.QUESTION_MESSAGE);
+            String inputWidth = JOptionPane.showInputDialog(this, "Numero de columnas?: ", "cambiar tamaño", JOptionPane.QUESTION_MESSAGE);
+            if (inputHeight != null && inputWidth != null) {
+                int h = Integer.parseInt(inputHeight);
+                int w = Integer.parseInt(inputWidth);
+                movimientosContador = 0;
+                juego.modifySizeBoard(h, w);
+                refresh();
+            }
         });
 
         colorMuros.addActionListener(e -> cambiarColor("muros", 1));
