@@ -153,7 +153,8 @@ public class SokobanGUI extends JFrame {
         salvar = new JMenuItem("Salvar");
         salir = new JMenuItem("Salir");
         reiniciar = new JMenuItem("Reiniciar");
-        cambiarTamaño = new JMenuItem("Cambiar tamaño"); // ciclo 8        
+        cambiarTamaño = new JMenuItem("Cambiar tamaño"); // ciclo 8    
+            
         
         colorMuros = new JMenuItem("Color de muros");
         colorSuelo = new JMenuItem("Color de suelo");
@@ -215,7 +216,7 @@ public class SokobanGUI extends JFrame {
             refresh();                 
         });
 
-        // ciclo 8 - CORREGIDO
+        // ciclo 8
         cambiarTamaño.addActionListener(e -> {
             String inputHeight = JOptionPane.showInputDialog(this, "Numero de filas?: ", "cambiar tamaño", JOptionPane.QUESTION_MESSAGE);
             String inputWidth = JOptionPane.showInputDialog(this, "Numero de columnas?: ", "cambiar tamaño", JOptionPane.QUESTION_MESSAGE);
@@ -255,6 +256,9 @@ public class SokobanGUI extends JFrame {
                 if (movio) {
                     movimientosContador++;
                     refresh();
+                    if (juego.playerWin()) {
+                        JOptionPane.showMessageDialog(SokobanGUI.this, "Felicidades, ganaste en " + movimientosContador + " movimientos");
+                    }
                 }
             }
         });
