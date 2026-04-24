@@ -12,6 +12,8 @@ import java.util.*;
  * boxesAtDestination >= 0 y boxesAtDestination <= numElements 
  */
 
+// pendiente: corregir el metodo generate para evitar que la recursion falle para casos de 5 x 5 
+
 public class Sokoban {
     private int height;
     private int width;    
@@ -320,6 +322,7 @@ public class Sokoban {
         this.height = height;
         this.width = width;
         this.numElements = (int)(height * width / 10);
+        this.boxesAtDestination = 0;
         this.board = new char[height][width];
         generate();
     }
@@ -387,6 +390,14 @@ public class Sokoban {
             }
         }
         this.boxesAtDestination = 0;
+    }
+
+    /**
+     * Verifica si se ha ganado el juego
+     * @return true si todas las cajas estan en su destino, false en caso contrario
+     */
+    public boolean playerWin(){
+        return boxesAtDestination == numElements;
     }
 
 }
