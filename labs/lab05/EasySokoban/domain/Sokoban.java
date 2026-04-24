@@ -222,8 +222,9 @@ public class Sokoban {
      * @param direction direcciones validas: 'u'=arriba, 'd'=abajo, 'l'=izquierda, 'r'=derecha.
      */
     public void move(char direction){
-        int row = playerPosition()[0];
-        int col = playerPosition()[1];
+        int[] pos = playerPosition();
+        int row = pos[0];
+        int col = pos[1];
         char leaving = (board[row][col] == 'P') ? 'd' : 'e';
 
         int nextRow = row, nextCol = col;
@@ -242,24 +243,37 @@ public class Sokoban {
             switch (board[afterRow][afterCol]) {
                 case 'e':
                     board[row][col] = leaving;
-                    board[nextRow][nextCol] = (board[nextRow][nextCol] == 'B') ? 'd' : 'p';
-                    board[afterRow][afterCol] = (boxType == 'B') ? 'B' : 'b';
-                    if (board[nextRow][nextCol] == 'd') board[nextRow][nextCol] = 'P';
-                    else board[nextRow][nextCol] = 'p';
+                    board[afterRow][afterCol] = 'b';
+                    
+                    if (boxType == 'B') {
+                        boxesAtDestination--; 
+                        board[nextRow][nextCol] = 'P';
+                    } else {
+                        board[nextRow][nextCol] = 'p';
+                    }
                     break;
+                    
                 case 'd':
                     board[row][col] = leaving;
                     board[afterRow][afterCol] = 'B';
-                    board[nextRow][nextCol] = (board[nextRow][nextCol] == 'B') ? 'P' : 'p';
-                    boxesAtDestination++;
+                    
+                    if (boxType == 'b') {
+                        boxesAtDestination++;
+                        board[nextRow][nextCol] = 'p';
+                    } else {
+                        board[nextRow][nextCol] = 'P'; 
+                    }
                     break;
+                    
                 case 'w': case 'b': case 'B':
                     break;
             }
-        } else if (board[nextRow][nextCol] == 'd') {
+        } 
+        else if (board[nextRow][nextCol] == 'd') {
             board[row][col] = leaving;
             board[nextRow][nextCol] = 'P';
-        } else {
+        } 
+        else {
             board[row][col] = leaving;
             board[nextRow][nextCol] = 'p';
         }
