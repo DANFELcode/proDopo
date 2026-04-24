@@ -77,7 +77,6 @@ public class Sokoban {
                     randomRow = rand.nextInt(board.length);
                     randomCol = rand.nextInt(board[0].length);
                 } while ((board[randomRow][randomCol] != 'e')
-                    // regla 2
                     || (e == 'b' && isStuck(randomRow, randomCol)) 
                     || (e == 'b' && isBoxesInAdjacency(randomRow, randomCol)) 
                 );
@@ -85,17 +84,14 @@ public class Sokoban {
             }               
         }    
 
-
         int randomRow, randomCol;
         do{
             randomRow = rand.nextInt(board.length);
             randomCol = rand.nextInt(board[0].length);
         } while ((board[randomRow][randomCol] != 'e')
-            || areBoxNeighbors(randomRow, randomCol)); // regla 3
+            || areBoxNeighbors(randomRow, randomCol));
         board[randomRow][randomCol] = 'p';
 
-    
-        // Regla 1
         if (!isConnected()){
             generate();
         } else{
@@ -112,37 +108,11 @@ public class Sokoban {
      * @return true si se forma un bloque 2x2 de cajas, false en caso contrario
      */ 
     private boolean isBoxesInAdjacency(int row, int col) {
-
         boolean badAdjacency = false;
-
-        // arriba-izquierda
-        badAdjacency = badAdjacency || (
-            board[row-1][col] == 'b' &&
-            board[row][col-1] == 'b' &&
-            board[row-1][col-1] == 'b'
-        );
-
-        // arriba-derecha
-        badAdjacency = badAdjacency || (
-            board[row-1][col] == 'b' &&
-            board[row][col+1] == 'b' &&
-            board[row-1][col+1] == 'b'
-        );
-
-        // abajo-izquierda
-        badAdjacency = badAdjacency || (
-            board[row+1][col] == 'b' &&
-            board[row][col-1] == 'b' &&
-            board[row+1][col-1] == 'b'
-        );
-
-        // abajo-derecha
-        badAdjacency = badAdjacency || (
-            board[row+1][col] == 'b' &&
-            board[row][col+1] == 'b' &&
-            board[row+1][col+1] == 'b'
-        );
-
+        badAdjacency = badAdjacency || (board[row-1][col] == 'b' && board[row][col-1] == 'b' && board[row-1][col-1] == 'b');
+        badAdjacency = badAdjacency || (board[row-1][col] == 'b' && board[row][col+1] == 'b' && board[row-1][col+1] == 'b');
+        badAdjacency = badAdjacency || (board[row+1][col] == 'b' && board[row][col-1] == 'b' && board[row+1][col-1] == 'b');
+        badAdjacency = badAdjacency || (board[row+1][col] == 'b' && board[row][col+1] == 'b' && board[row+1][col+1] == 'b');
         return badAdjacency;
     }
 
@@ -152,18 +122,15 @@ public class Sokoban {
      * @param col Columna de la posicion a evaluar
      * @return true si hay al menos una caja vecina, false en caso contrario
      */
-
     private boolean areBoxNeighbors(int row, int col) {
         boolean neighborVertical = board[row-1][col] == 'b' || board[row+1][col] == 'b';
         boolean neighborHorizontal = board[row][col-1] == 'b' || board[row][col+1] == 'b';
         return neighborVertical || neighborHorizontal;
     }
 
-
     /**
      * Determina si una posicion corresponde a un atascamiento de una caja con respecto 
-     * a las paredes, es decir posiciones donde las cajas no se peudan mover
-     * 
+     * a las paredes
      * @param row Fila de la posicion a evaluar
      * @param col Columna de la posicion a evaluar
      * @return true si la posicion esta bloqueada, false en caso contrario
@@ -191,13 +158,13 @@ public class Sokoban {
                         int pushCol = col - dir[1];
                         int destRow = row + dir[0];
                         int destCol = col + dir[1];
-                        if (visited[pushRow][pushCol] && board[destRow][destCol] != 'w') {
+                        if (pushRow >= 0 && pushRow < height && pushCol >= 0 && pushCol < width
+                            && destRow >= 0 && destRow < height && destCol >= 0 && destCol < width
+                            && visited[pushRow][pushCol] && board[destRow][destCol] != 'w') {
                             canPush = true;
                         }
                     }
-                    if (!canPush) {
-                        return false;
-                    }
+                    if (!canPush) return false;
                 }
             }
         }
@@ -241,24 +208,76 @@ public class Sokoban {
 
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
-                if (board[row][col] == 'd' && !visited[row][col]) {
-                    return false;
-                }
+                if (board[row][col] == 'd' && !visited[row][col]) return false;
             }
         }
 
         return allBoxesCanBePushed(visited);
-        
     }
 
     /**
      * Mueve el jugador en una dirección posible
      * Si hay una caja en el camino la empuja a la siguiente celda vacia, si hay una pared
      * no permite que el jugador se mueva
-     * @param direction direcciones validas: 'U'=arriba, 'D'=abajo, 'L'=izquierda, 'R'=derecha.
+     * @param direction direcciones validas: 'u'=arriba, 'd'=abajo, 'l'=izquierda, 'r'=derecha.
      */
     public void move(char direction){
+        int row = playerPosition()[0];
+        int col = playerPosition()[1];
+        char leaving = (board[row][col] == 'P') ? 'd' : 'e';
 
+        int nextRow = row, nextCol = col;
+        if (direction == 'u') nextRow = row - 1;
+        else if (direction == 'd') nextRow = row + 1;
+        else if (direction == 'l') nextCol = col - 1;
+        else if (direction == 'r') nextCol = col + 1;
+
+        if (board[nextRow][nextCol] == 'w') return;
+
+        if (board[nextRow][nextCol] == 'b' || board[nextRow][nextCol] == 'B') {
+            char boxType = board[nextRow][nextCol];
+            int afterRow = nextRow + (nextRow - row);
+            int afterCol = nextCol + (nextCol - col);
+
+            switch (board[afterRow][afterCol]) {
+                case 'e':
+                    board[row][col] = leaving;
+                    board[nextRow][nextCol] = (board[nextRow][nextCol] == 'B') ? 'd' : 'p';
+                    board[afterRow][afterCol] = (boxType == 'B') ? 'B' : 'b';
+                    if (board[nextRow][nextCol] == 'd') board[nextRow][nextCol] = 'P';
+                    else board[nextRow][nextCol] = 'p';
+                    break;
+                case 'd':
+                    board[row][col] = leaving;
+                    board[afterRow][afterCol] = 'B';
+                    board[nextRow][nextCol] = (board[nextRow][nextCol] == 'B') ? 'P' : 'p';
+                    boxesAtDestination++;
+                    break;
+                case 'w': case 'b': case 'B':
+                    break;
+            }
+        } else if (board[nextRow][nextCol] == 'd') {
+            board[row][col] = leaving;
+            board[nextRow][nextCol] = 'P';
+        } else {
+            board[row][col] = leaving;
+            board[nextRow][nextCol] = 'p';
+        }
+    }
+
+    /**
+     * Retorna la posicion del jugador en el tablero
+     * @return arreglo con la fila y columna del jugador
+     */
+    public int[] playerPosition(){
+        for (int i = 0; i < height; i++){
+            for (int j = 0; j < width; j++){
+                if (board[i][j] == 'p' || board[i][j] == 'P'){
+                    return new int[] {i, j};
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -267,7 +286,7 @@ public class Sokoban {
      * [2]=destinos.
      */
     public void modifyColors(String[] colors){
-
+        this.colors = colors;
     }
 
     /**
@@ -276,7 +295,11 @@ public class Sokoban {
      * @param width El nuevo numero de columnas
      */
     public void modifySizeBoard(int height, int width){
-
+        this.height = height;
+        this.width = width;
+        this.numElements = (int)(height * width / 10);
+        this.board = new char[height][width];
+        generate();
     }
 
     /**
@@ -300,7 +323,8 @@ public class Sokoban {
     /**
      * Retorna el estado actual del tablero.
      * @return Una matriz que representa la posición de todos los caracteres en el juego
-     * 'e' = empty, 'w' = wall, 'p' = player, 'b' = box, 'd' = destination, 'B' = box at destination
+     * 'e'=empty, 'w'=wall, 'p'=player, 'P'=player on destination, 
+     * 'b'=box, 'B'=box at destination, 'd'=destination
      */
     public char[][] board(){
         return board;
@@ -317,6 +341,15 @@ public class Sokoban {
     public static void main(String[] args) {
         Sokoban s = new Sokoban(9, 7);
         s.generate();
+        for (int row = 0; row < 9; row++) {
+            for (int col = 0; col < 7; col++) {
+                System.out.print(s.board()[row][col] + " ");
+            }
+            System.out.println();
+        }
+        s.move('d');
+        System.out.println();
+        System.out.println();
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 7; col++) {
                 System.out.print(s.board()[row][col] + " ");
