@@ -1,42 +1,51 @@
 package presentation;
 
+import domain.Sokoban;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import javax.swing.*;
 import java.io.File;
 
 /**
  * SokobanGUI - Interfaz gráfica para el juego Sokoban
- *
- * @author Daniel Felipe Sua y Juan David Munar
+ * * @author Daniel Felipe Sua y Juan David Munar
  */
 public class SokobanGUI extends JFrame {
 
-    private JMenuBar menuBar;
-    private JMenu opciones;
-    private JMenuItem salir, colorMuro, colorSuelo, colorCaja, abrir, salvar;
-    private JPanel panelTablero;
-    private JLabel labelMovimientos;
-    private JLabel labelIntentos;
+    private Sokoban juego;
 
-    private Color colorActualMuro = Color.DARK_GRAY;
-    private Color colorActualSuelo = Color.LIGHT_GRAY;
-    private Color colorActualCaja = Color.BLACK;
+    private JMenuBar menuBar;
+    private JMenu opciones, configuración;
+    private JMenuItem nuevo, abrir, salvar, salir;
+    private JMenuItem colorMuros, colorSuelo, colorJugador, colorCaja;
+
+    private JPanel panelTablero;
+    private JLabel labelMovimientos, labelIntentos;
+
+    private Color colorActualMuro = new Color(155, 145, 90);
+    private Color colorActualSuelo = new Color(225, 215, 175); 
+    private Color colorActualJugador = Color.BLUE;
+    private Color colorActualCaja = Color.ORANGE;
     private final Color COLOR_DESTINO = Color.PINK;
+
+    private Color colorCajaEnDestino = new Color(139, 69, 19);   
+    
+    private int movimientosContador = 0;
 
     /**
      * Inicializa la ventana y sus componentes.
      */
     public SokobanGUI() {
-        super("EasySokoban"); 
+        super("EasySokoban");
+        juego = new Sokoban(9, 7);
+        juego.generate();
+        
         prepareElements();
         prepareActions();
     }
 
     /**
      * Punto de entrada principal de la aplicación.
-     * @param args Argumentos de línea de comandos.
      */
     public static void main(String[] args) {
         SokobanGUI ventana = new SokobanGUI();
@@ -44,20 +53,26 @@ public class SokobanGUI extends JFrame {
     }
 
     /**
-     * Configura los parámetros iniciales de la ventana
+     * Configura los parámetros iniciales de la ventana.
      */
     public void prepareElements() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         this.setSize(screenSize.width / 2, screenSize.height / 2); 
         this.setLocationRelativeTo(null);
         this.setLayout(new BorderLayout());
-        prepareElementsMenu();
-        prepareElementsBoard();
+
+        labelMovimientos = new JLabel(" Movimientos: 0");
+        labelIntentos = new JLabel("Cajas en Destino: 0 ", SwingConstants.RIGHT);
+        labelMovimientos.setFont(new Font("Arial", Font.BOLD, 14));
+        labelIntentos.setFont(new Font("Arial", Font.BOLD, 14));
+
+        prepareElementsMenu(); 
+        prepareElementsBoard(); 
         prepareElementsEstado();
     }
 
     /**
-     * Prepara el panel central donde se ubicará el tablero de juego.
+     * Prepara el panel central 
      */
     private void prepareElementsBoard() {
         panelTablero = new JPanel();
@@ -66,112 +81,187 @@ public class SokobanGUI extends JFrame {
     }
 
     /**
-     * Prepara el panel de estado inferior con los contadores de movimientos e intentos.
+     * Agrega los labels al panel de estado inferior.
      */
     private void prepareElementsEstado() {
         JPanel panelEstado = new JPanel(new GridLayout(1, 2));
-        labelMovimientos = new JLabel(" Movimientos: 0");
-        labelIntentos = new JLabel(" Intentos: 0");
         panelEstado.add(labelMovimientos);
         panelEstado.add(labelIntentos);
         this.add(panelEstado, BorderLayout.SOUTH);
     }
 
     /**
-     * Redibuja el tablero de juego, actualizando los colores y componentes visuales.
+     * Redibuja el tablero de juego
      */
     public void refresh() {
-        panelTablero.removeAll();
-        int filas = 9;
-        int columnas = 7;
-        panelTablero.setLayout(new GridLayout(filas, columnas));
+        if (panelTablero == null) return;
 
+        panelTablero.removeAll();
+        char[][] board = juego.board();
+        int filas = board.length;
+        int columnas = board[0].length;
+        
+        panelTablero.setLayout(new GridLayout(filas, columnas));
+        
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
                 JPanel celda = new JPanel();
-                celda.setBackground(colorActualSuelo);
+                celda.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+                char tipo = board[i][j];
+
+                switch (tipo) {
+                    case 'w': 
+                        celda.setBackground(colorActualMuro); 
+                        break;
+                    case 'p': 
+                    case 'P': 
+                        celda.setBackground(colorActualJugador); 
+                        break;
+                    case 'b': 
+                        celda.setBackground(colorActualCaja); 
+                        break;
+                    case 'B': 
+                        celda.setBackground(colorCajaEnDestino); 
+                        break;
+                    case 'd': 
+                        celda.setBackground(COLOR_DESTINO); 
+                        break;
+                    default:
+                        celda.setBackground(colorActualSuelo); 
+                        break;
+                }
                 panelTablero.add(celda);
             }
         }
+        
+        labelMovimientos.setText(" Movimientos: " + movimientosContador);
+        labelIntentos.setText("Cajas en Destino: " + juego.score() + " ");
         
         panelTablero.revalidate();
         panelTablero.repaint();
     }
 
     /**
-     * Prepara la barra de menús
+     * Prepara los elementos del menu
      */
     private void prepareElementsMenu() {
         menuBar = new JMenuBar();
         opciones = new JMenu("Opciones");
+        configuración = new JMenu("Configuración");
 
-        salir = new JMenuItem("Salir");
-        colorMuro = new JMenuItem("Color Muro");
-        colorSuelo = new JMenuItem("Color Suelo");
-        colorCaja = new JMenuItem("Color Caja");
+        nuevo = new JMenuItem("Nuevo");
         abrir = new JMenuItem("Abrir");
         salvar = new JMenuItem("Salvar");
+        salir = new JMenuItem("Salir");
+        
+        colorMuros = new JMenuItem("Color de muros");
+        colorSuelo = new JMenuItem("Color de suelo");
+        colorJugador = new JMenuItem("Color de personaje");
+        colorCaja = new JMenuItem("Color de caja");
 
+        opciones.add(nuevo);
+        opciones.addSeparator(); 
         opciones.add(abrir);
-        opciones.add(salvar);
         opciones.addSeparator();
-        opciones.add(colorMuro);
-        opciones.add(colorSuelo);
-        opciones.add(colorCaja);
+        opciones.add(salvar);
         opciones.addSeparator();
         opciones.add(salir);
 
+        configuración.add(colorMuros);
+        configuración.add(colorSuelo);
+        configuración.add(colorJugador);
+        configuración.add(colorCaja);
+
         menuBar.add(opciones);
+        menuBar.add(configuración);
         this.setJMenuBar(menuBar);
     }
 
     /**
-     * Define el comportamiento de cierre de la ventana y enlaza las acciones de los menús.
+     * Configura las acciones para los elementos de la interfaz
      */
     public void prepareActions() {
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                exit();
-            }
+            @Override
+            public void windowClosing(WindowEvent e) { exit(); }
         });
-        prepareActionsMenu();
+        
+        prepareActionsMenu(); 
         prepareActionsPersistencia();
+        prepareActionsTeclado();
     }
 
     /**
-     * Asigna los listeners para las opciones de salir y personalización de colores.
+     * Configura las acciones para los elementos del menu
      */
     private void prepareActionsMenu() {
         salir.addActionListener(e -> exit());
+        
+        nuevo.addActionListener(e -> {
+            movimientosContador = 0;
+            juego.generate();
+            refresh();
+        });
 
-        colorMuro.addActionListener(e -> cambiarColor("muro", 1));
+        colorMuros.addActionListener(e -> cambiarColor("muros", 1));
         colorSuelo.addActionListener(e -> cambiarColor("suelo", 2));
+        colorJugador.addActionListener(e -> cambiarColor("personaje", 3));
         colorCaja.addActionListener(e -> cambiarColor("caja", 4));
     }
 
     /**
-     * Despliega un JColorChooser para modificar el color de los elementos del juego.
-     * @param tipo Nombre del elemento a cambiar.
-     * @param opcion Índice del elemento para asignar el nuevo color.
+     * Configura las acciones para el teclado
+     */
+    private void prepareActionsTeclado() {
+        this.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                int code = e.getKeyCode();
+                boolean movio = true;
+
+                switch (code) {
+                    case KeyEvent.VK_UP:    juego.move('u'); break;
+                    case KeyEvent.VK_DOWN:  juego.move('d'); break;
+                    case KeyEvent.VK_LEFT:  juego.move('l'); break;
+                    case KeyEvent.VK_RIGHT: juego.move('r'); break;
+                    default: movio = false; break;
+                }
+
+                if (movio) {
+                    movimientosContador++;
+                    refresh();
+                }
+            }
+        });
+        this.setFocusable(true);
+        this.requestFocusInWindow(); 
+    }
+
+    /**
+     * Permite cambiar el color de un elemento del tablero
+     * @param tipo El tipo de elemento a cambiar (muros, suelo, personaje, caja)
+     * @param opcion Un número que indica qué color se está cambiando (1=muro, 2=suelo, 3=jugador, 4=caja)
      */
     private void cambiarColor(String tipo, int opcion) {
         Color inicial = Color.WHITE;
         if(opcion == 1) inicial = colorActualMuro;
-        else if(opcion == 2) inicial = colorActualSuelo;
-        else if(opcion == 4) inicial = colorActualCaja;
+        if(opcion == 2) inicial = colorActualSuelo;
+        if(opcion == 3) inicial = colorActualJugador;
+        if(opcion == 4) inicial = colorActualCaja;
 
-        Color nuevo = JColorChooser.showDialog(this, "Seleccionar color para " + tipo, inicial);
-        if (nuevo != null) {
-            if(opcion == 1) colorActualMuro = nuevo;
-            else if(opcion == 2) colorActualSuelo = nuevo;
-            else if(opcion == 4) colorActualCaja = nuevo;
-            refresh();
+        Color nuevoColor = JColorChooser.showDialog(this, "Seleccione color para: " + tipo, inicial); 
+        if (nuevoColor != null) {
+            if(opcion == 1) colorActualMuro = nuevoColor;
+            if(opcion == 2) colorActualSuelo = nuevoColor;
+            if(opcion == 3) colorActualJugador = nuevoColor;
+            if(opcion == 4) colorActualCaja = nuevoColor;
+            refresh(); 
         }
     }
 
     /**
-     * Muestra un diálogo de confirmación antes de cerrar la aplicación.
+     * Muestra un diálogo de confirmación antes de cerrar
      */
     private void exit() {
         int option = JOptionPane.showConfirmDialog(this, "¿Desea cerrar la aplicación?", "Confirmar salida", JOptionPane.YES_NO_OPTION); 
@@ -179,24 +269,22 @@ public class SokobanGUI extends JFrame {
     }
 
     /**
-     * Configura las acciones para los diálogos de apertura y guardado de archivos.
+     * Prepara las acciones para la persistencia de datos
      */
     private void prepareActionsPersistencia() {
         abrir.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser(); 
-            int result = fileChooser.showOpenDialog(this); 
-            if (result == JFileChooser.APPROVE_OPTION) {
+            if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile(); 
-                JOptionPane.showMessageDialog(this, "Funcion Abrir aun en construcción.\n" + "Archivo seleccionado: " + selectedFile.getName()); 
+                JOptionPane.showMessageDialog(this, "Funcion Abrir aun en construcción.\nArchivo seleccionado: " + selectedFile.getName()); 
             }
         });
 
         salvar.addActionListener(e -> {
             JFileChooser fileChooser = new JFileChooser(); 
-            int result = fileChooser.showSaveDialog(this); 
-            if (result == JFileChooser.APPROVE_OPTION) {
+            if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
                 File selectedFile = fileChooser.getSelectedFile(); 
-                JOptionPane.showMessageDialog(this, "Funcion Salvar aun en construcción.\n" + "Archivo guardado: " + selectedFile.getName());
+                JOptionPane.showMessageDialog(this, "Funcion Salvar aun en construcción.\nArchivo guardado: " + selectedFile.getName());
             }
         });
     }
