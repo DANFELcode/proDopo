@@ -20,6 +20,7 @@ public class Sokoban {
     private String[] colors;
     
     private char[][] board;
+    private char[][] boardOriginal;
 
 
     /**
@@ -96,7 +97,14 @@ public class Sokoban {
             generate();
         } else{
             System.out.println("Tablero conectado");
-        }      
+        }
+
+        boardOriginal = new char[height][width];
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                boardOriginal[i][j] = board[i][j];
+            }
+        }
                    
     }
 
@@ -370,6 +378,15 @@ public class Sokoban {
             }
             System.out.println();
         }
+    }
+
+    public void restart() {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                board[i][j] = boardOriginal[i][j];
+            }
+        }
+        this.boxesAtDestination = 0;
     }
 
 }
