@@ -16,7 +16,7 @@ public class SokobanGUI extends JFrame {
 
     private JMenuBar menuBar;
     private JMenu opciones, configuración;
-    private JMenuItem nuevo, abrir, salvar, salir;
+    private JMenuItem nuevo, abrir, salvar, salir, reiniciar;
     private JMenuItem colorMuros, colorSuelo, colorJugador, colorCaja;
 
     private JPanel panelTablero;
@@ -27,7 +27,6 @@ public class SokobanGUI extends JFrame {
     private Color colorActualJugador = Color.BLUE;
     private Color colorActualCaja = Color.ORANGE;
     private final Color COLOR_DESTINO = Color.PINK;
-
     private Color colorCajaEnDestino = new Color(139, 69, 19);   
     
     private int movimientosContador = 0;
@@ -153,6 +152,7 @@ public class SokobanGUI extends JFrame {
         abrir = new JMenuItem("Abrir");
         salvar = new JMenuItem("Salvar");
         salir = new JMenuItem("Salir");
+        reiniciar = new JMenuItem("Reiniciar");
         
         colorMuros = new JMenuItem("Color de muros");
         colorSuelo = new JMenuItem("Color de suelo");
@@ -166,6 +166,8 @@ public class SokobanGUI extends JFrame {
         opciones.add(salvar);
         opciones.addSeparator();
         opciones.add(salir);
+        opciones.addSeparator();
+        opciones.add(reiniciar);
 
         configuración.add(colorMuros);
         configuración.add(colorSuelo);
@@ -175,6 +177,7 @@ public class SokobanGUI extends JFrame {
         menuBar.add(opciones);
         menuBar.add(configuración);
         this.setJMenuBar(menuBar);
+
     }
 
     /**
@@ -202,6 +205,12 @@ public class SokobanGUI extends JFrame {
             movimientosContador = 0;
             juego.generate();
             refresh();
+        });
+
+        reiniciar.addActionListener(e -> {
+            juego.restart();           
+            movimientosContador = 0;   
+            refresh();                 
         });
 
         colorMuros.addActionListener(e -> cambiarColor("muros", 1));
