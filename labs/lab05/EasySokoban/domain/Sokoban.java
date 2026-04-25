@@ -304,14 +304,6 @@ public class Sokoban {
         return null;
     }
 
-    /**
-     * Modifica los colores de cajas y destinos.
-     * @param colors Arreglo de 3 colores: [0]=cajas en el destino, [1]=cajas, 
-     * [2]=destinos.
-     */
-    public void modifyColors(String[] colors){
-        this.colors = colors;
-    }
 
     /**
      * Modifica el tamaño del tablero y genera uno con las nuevas dimensiones
