@@ -162,7 +162,7 @@ public class Sokoban {
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
                 if (board[row][col] == 'b') {
-                    boolean canPush = false;
+                    int pushCount = 0;
                     for (int[] dir : directions) {
                         int pushRow = row - dir[0];
                         int pushCol = col - dir[1];
@@ -171,10 +171,10 @@ public class Sokoban {
                         if (pushRow >= 0 && pushRow < height && pushCol >= 0 && pushCol < width
                             && destRow >= 0 && destRow < height && destCol >= 0 && destCol < width
                             && visited[pushRow][pushCol] && board[destRow][destCol] != 'w') {
-                            canPush = true;
+                            pushCount++;
                         }
                     }
-                    if (!canPush) return false;
+                    if (pushCount < 2) return false;
                 }
             }
         }
