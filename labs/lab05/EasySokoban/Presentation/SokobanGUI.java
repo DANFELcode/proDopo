@@ -17,7 +17,7 @@ public class SokobanGUI extends JFrame {
     private JMenuBar menuBar;
     private JMenu opciones, configuración;
     private JMenuItem nuevo, abrir, salvar, salir, reiniciar, cambiarTamaño; // ciclo 8
-    private JMenuItem colorMuros, colorSuelo, colorJugador, colorCaja;
+    private JMenuItem colorMuros, colorSuelo, colorJugador, colorCaja, colorDestino;
 
     private JPanel panelTablero;
     private JLabel labelMovimientos, labelIntentos;
@@ -26,7 +26,7 @@ public class SokobanGUI extends JFrame {
     private Color colorActualSuelo = new Color(225, 215, 175); 
     private Color colorActualJugador = Color.BLUE;
     private Color colorActualCaja = Color.ORANGE;
-    private final Color COLOR_DESTINO = Color.PINK;
+    private Color colorActualDestino = Color.PINK;
     private Color colorCajaEnDestino = new Color(139, 69, 19);   
     
     private int movimientosContador = 0;
@@ -122,9 +122,7 @@ public class SokobanGUI extends JFrame {
                     case 'B': 
                         celda.setBackground(colorCajaEnDestino); 
                         break;
-                    case 'd': 
-                        celda.setBackground(COLOR_DESTINO); 
-                        break;
+                    case 'd': celda.setBackground(colorActualDestino); break;
                     default:
                         celda.setBackground(colorActualSuelo); 
                         break;
@@ -160,6 +158,7 @@ public class SokobanGUI extends JFrame {
         colorSuelo = new JMenuItem("Color de suelo");
         colorJugador = new JMenuItem("Color de personaje");
         colorCaja = new JMenuItem("Color de caja");
+        colorDestino = new JMenuItem("Color de destino");
 
         opciones.add(nuevo);
         opciones.addSeparator(); 
@@ -175,6 +174,7 @@ public class SokobanGUI extends JFrame {
         configuración.add(colorSuelo);
         configuración.add(colorJugador);
         configuración.add(colorCaja);
+        configuración.add(colorDestino);
         configuración.add(cambiarTamaño); //ciclo 8
 
         menuBar.add(opciones);
@@ -223,6 +223,10 @@ public class SokobanGUI extends JFrame {
             if (inputHeight != null && inputWidth != null) {
                 int h = Integer.parseInt(inputHeight);
                 int w = Integer.parseInt(inputWidth);
+                if (h < 6 || w < 6) {
+                    JOptionPane.showMessageDialog(this, "El tamaño minimo es 7x7");
+                    return;
+                }
                 movimientosContador = 0;
                 juego.modifySizeBoard(h, w);
                 refresh();
@@ -233,6 +237,7 @@ public class SokobanGUI extends JFrame {
         colorSuelo.addActionListener(e -> cambiarColor("suelo", 2));
         colorJugador.addActionListener(e -> cambiarColor("personaje", 3));
         colorCaja.addActionListener(e -> cambiarColor("caja", 4));
+        colorDestino.addActionListener(e -> cambiarColor("destino", 5));
     }
 
     /**
@@ -277,6 +282,7 @@ public class SokobanGUI extends JFrame {
         if(opcion == 2) inicial = colorActualSuelo;
         if(opcion == 3) inicial = colorActualJugador;
         if(opcion == 4) inicial = colorActualCaja;
+        if(opcion == 5) inicial = colorActualDestino;
 
         Color nuevoColor = JColorChooser.showDialog(this, "Seleccione color para: " + tipo, inicial); 
         if (nuevoColor != null) {
@@ -284,6 +290,8 @@ public class SokobanGUI extends JFrame {
             if(opcion == 2) colorActualSuelo = nuevoColor;
             if(opcion == 3) colorActualJugador = nuevoColor;
             if(opcion == 4) colorActualCaja = nuevoColor;
+            if(opcion == 5) colorActualDestino = nuevoColor;
+            
             refresh(); 
         }
     }
