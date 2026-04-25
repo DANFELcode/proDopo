@@ -224,7 +224,7 @@ public class SokobanGUI extends JFrame {
                 int h = Integer.parseInt(inputHeight);
                 int w = Integer.parseInt(inputWidth);
                 if (h < 6 || w < 6) {
-                    JOptionPane.showMessageDialog(this, "El tamaño minimo es 7x7");
+                    JOptionPane.showMessageDialog(this, "El tamaño minimo es 6x6");
                     return;
                 }
                 movimientosContador = 0;
@@ -249,12 +249,12 @@ public class SokobanGUI extends JFrame {
             public void keyPressed(KeyEvent e) {
                 int code = e.getKeyCode();
                 boolean movio = true;
-
+                
                 switch (code) {
-                    case KeyEvent.VK_UP:    juego.move('u'); break;
-                    case KeyEvent.VK_DOWN:  juego.move('d'); break;
-                    case KeyEvent.VK_LEFT:  juego.move('l'); break;
-                    case KeyEvent.VK_RIGHT: juego.move('r'); break;
+                    case KeyEvent.VK_UP:    movio = juego.move('u'); break;
+                    case KeyEvent.VK_DOWN:  movio = juego.move('d'); break;
+                    case KeyEvent.VK_LEFT:  movio = juego.move('l'); break;
+                    case KeyEvent.VK_RIGHT: movio = juego.move('r'); break;
                     default: movio = false; break;
                 }
 
