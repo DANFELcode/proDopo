@@ -12,8 +12,6 @@ import java.util.*;
  * boxesAtDestination >= 0 y boxesAtDestination <= numElements 
  */
 
-// pendiente: corregir el metodo generate para evitar que la recursion falle para casos de 5 x 5 
-
 public class Sokoban {
     private int height;
     private int width;    
@@ -54,60 +52,51 @@ public class Sokoban {
      * bloquearla sin querer contra una pared )
      */     
     public void generate(){
-        
-        for (int row = 0; row < height; row++) {
-            for (int col = 0; col < width; col++) {
-                board[row][col] = 'e';
-            }
-        }
-
-        for (int row = 0; row < height; row++) {
-            board[row][0] = 'w';
-            board[row][width-1] = 'w';
-        }
-        for (int col = 0; col < width; col++) {
-            board[0][col] = 'w';
-            board[height-1][col] = 'w';
-        }
-
         Random rand = new Random();
-
         char[] elements = new char[] {'w','b','d'};
-        for (char e:elements) {
-            for (int i = 0; i < numElements; i++) {
-                int randomRow, randomCol;
-                do{
-                    randomRow = rand.nextInt(board.length);
-                    randomCol = rand.nextInt(board[0].length);
-                } while ((board[randomRow][randomCol] != 'e')
-                    || (e == 'b' && isStuck(randomRow, randomCol)) 
-                    || (e == 'b' && isBoxesInAdjacency(randomRow, randomCol)) 
-                );
-                board[randomRow][randomCol] = e;
-            }               
-        }    
-
         int randomRow, randomCol;
-        do{
-            randomRow = rand.nextInt(board.length);
-            randomCol = rand.nextInt(board[0].length);
-        } while ((board[randomRow][randomCol] != 'e')
-            || areBoxNeighbors(randomRow, randomCol));
-        board[randomRow][randomCol] = 'p';
 
-        if (!isConnected()){
-            generate();
-        } else{
-            System.out.println("Tablero conectado");
-        }
+        do {
+            for (int row = 0; row < height; row++)
+                for (int col = 0; col < width; col++)
+                    board[row][col] = 'e';
+
+            for (int row = 0; row < height; row++){
+                board[row][0] = 'w';
+                board[row][width-1] = 'w';
+            }
+            for (int col = 0; col < width; col++){
+                board[0][col] = 'w';
+                board[height-1][col] = 'w';
+            }
+
+            for (char e : elements) {
+                for (int i = 0; i < numElements; i++) {
+                    do {
+                        randomRow = rand.nextInt(board.length);
+                        randomCol = rand.nextInt(board[0].length);
+                    } while ((board[randomRow][randomCol] != 'e')
+                        || (e == 'b' && isStuck(randomRow, randomCol))
+                        || (e == 'b' && isBoxesInAdjacency(randomRow, randomCol)));
+                    board[randomRow][randomCol] = e;
+                }
+            }
+
+            do {
+                randomRow = rand.nextInt(board.length);
+                randomCol = rand.nextInt(board[0].length);
+            } while ((board[randomRow][randomCol] != 'e')
+                || areBoxNeighbors(randomRow, randomCol));
+            board[randomRow][randomCol] = 'p';
+
+        } while (!isConnected());
+
+        System.out.println("Tablero conectado");
 
         boardOriginal = new char[height][width];
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
+        for (int i = 0; i < height; i++)
+            for (int j = 0; j < width; j++)
                 boardOriginal[i][j] = board[i][j];
-            }
-        }
-                   
     }
 
     /**
@@ -230,8 +219,9 @@ public class Sokoban {
      * Si hay una caja en el camino la empuja a la siguiente celda vacia, si hay una pared
      * no permite que el jugador se mueva
      * @param direction direcciones validas: 'u'=arriba, 'd'=abajo, 'l'=izquierda, 'r'=derecha.
+     * @return true si el movimiento fue exitoso, false en caso contrario
      */
-    public void move(char direction){
+    public boolean move(char direction){
         int[] pos = playerPosition();
         int row = pos[0];
         int col = pos[1];
@@ -243,7 +233,7 @@ public class Sokoban {
         else if (direction == 'l') nextCol = col - 1;
         else if (direction == 'r') nextCol = col + 1;
 
-        if (board[nextRow][nextCol] == 'w') return;
+        if (board[nextRow][nextCol] == 'w') return false;
 
         if (board[nextRow][nextCol] == 'b' || board[nextRow][nextCol] == 'B') {
             char boxType = board[nextRow][nextCol];
@@ -254,38 +244,34 @@ public class Sokoban {
                 case 'e':
                     board[row][col] = leaving;
                     board[afterRow][afterCol] = 'b';
-                    
                     if (boxType == 'B') {
-                        boxesAtDestination--; 
+                        boxesAtDestination--;
                         board[nextRow][nextCol] = 'P';
                     } else {
                         board[nextRow][nextCol] = 'p';
                     }
-                    break;
-                    
+                    return true;
                 case 'd':
                     board[row][col] = leaving;
                     board[afterRow][afterCol] = 'B';
-                    
                     if (boxType == 'b') {
                         boxesAtDestination++;
                         board[nextRow][nextCol] = 'p';
                     } else {
-                        board[nextRow][nextCol] = 'P'; 
+                        board[nextRow][nextCol] = 'P';
                     }
-                    break;
-                    
-                case 'w': case 'b': case 'B':
-                    break;
+                    return true;
+                default:
+                    return false;
             }
-        } 
-        else if (board[nextRow][nextCol] == 'd') {
+        } else if (board[nextRow][nextCol] == 'd') {
             board[row][col] = leaving;
             board[nextRow][nextCol] = 'P';
-        } 
-        else {
+            return true;
+        } else {
             board[row][col] = leaving;
             board[nextRow][nextCol] = 'p';
+            return true;
         }
     }
 
@@ -303,7 +289,6 @@ public class Sokoban {
         }
         return null;
     }
-
 
     /**
      * Modifica el tamaño del tablero y genera uno con las nuevas dimensiones
@@ -355,6 +340,10 @@ public class Sokoban {
         return boxesAtDestination;
     }
 
+    public int getHeight() { return height; }
+    public int getWidth() { return width; }
+    public String[] getColors() { return colors; }
+
     public static void main(String[] args) {
         Sokoban s = new Sokoban(9, 7);
         s.generate();
@@ -391,5 +380,4 @@ public class Sokoban {
     public boolean playerWin(){
         return boxesAtDestination == numElements;
     }
-
 }
