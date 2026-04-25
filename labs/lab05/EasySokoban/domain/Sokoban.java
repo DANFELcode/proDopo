@@ -1,5 +1,4 @@
 package domain;
-
 import java.io.IOException;
 import java.util.*;
 
@@ -49,7 +48,8 @@ public class Sokoban {
      * 2. No permitir deadlocks estructurales, es decir cajas en esquinas inicialmente o paredes sin salida lateral, en general
      * en posiciones donde las cajas no se puedan mover    
      * 3. Distancia minima entre el jugador y las cajas al inicio = 2(el jugador no aparezca pegado a una caja al inicio porque podría
-     * bloquearla sin querer contra una pared )
+     * bloquearla sin querer contra una pared
+     * El proceso se repite hasta encontrar un tablero valido (do-while iterativo).
      */     
     public void generate(){
         Random rand = new Random();
@@ -144,7 +144,7 @@ public class Sokoban {
      * Verifica que todas las cajas tienen al menos una posicion desde la que el jugador
      * puede empujarlas a una celda no bloqueada.
      * @param visited Celdas alcanzables por el jugador
-     * @return true si todas las cajas pueden ser empujadas, false en caso contrario
+     * @return true si todas las cajas pueden ser empujadas desde al menos 2 direcciones, false en caso contrario
      */
     private boolean allBoxesCanBePushed(boolean[][] visited) {
         int[][] directions = {{-1,0},{1,0},{0,-1},{0,1}};
@@ -340,29 +340,9 @@ public class Sokoban {
         return boxesAtDestination;
     }
 
-    public int getHeight() { return height; }
-    public int getWidth() { return width; }
-    public String[] getColors() { return colors; }
-
-    public static void main(String[] args) {
-        Sokoban s = new Sokoban(9, 7);
-        s.generate();
-        for (int row = 0; row < 9; row++) {
-            for (int col = 0; col < 7; col++) {
-                System.out.print(s.board()[row][col] + " ");
-            }
-            System.out.println();
-        }
-        s.move('d');
-        System.out.println();
-        System.out.println();
-        for (int row = 0; row < 9; row++) {
-            for (int col = 0; col < 7; col++) {
-                System.out.print(s.board()[row][col] + " ");
-            }
-            System.out.println();
-        }
-    }
+    /**
+     * Reinicia el juego cuyo tablero ya ha sido generado
+     */
 
     public void restart() {
         for (int i = 0; i < height; i++) {
